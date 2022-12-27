@@ -1,16 +1,21 @@
+#include <filesystem>
 #include <iostream>
+#include <fstream>
 
-import MarkovChains;
+import Sandcore.MarkovChains;
+
+using namespace Sandcore;
 
 int main() {
 	setlocale(LC_ALL, "");
 
 	MarkovChains markovChains;
 
-	markovChains.uploadData("C:/Workbench/Markov Chains/names.txt");
-	markovChains.normalChances();
+	markovChains.uploadData("C:/Workbench/Markov Chains/human.txt");
 
-	for (auto& c : markovChains.getFirst()) {
-		std::cout << markovChains.generate(c, 10) << "\n";
+	auto& arr = markovChains.getFirstChain();
+
+	for (char c = 'A'; c <= 'Z'; ++c) {
+		std::cout << markovChains.generate(markovChains.getRandomChain(), markovChains.getRandomLength()) << "\n";
 	}
 }

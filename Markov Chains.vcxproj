@@ -129,7 +129,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\main enchanced.cpp" />
+    <ClCompile Include="Source\MarkovChainsEnchaned\MarkovChainsEnchaned.cpp" />
+    <ClCompile Include="Source\MarkovChainsEnchaned\MarkovChainsEnchaned.ixx" />
     <ClCompile Include="Source\MarkovChains\MarkovChains.cpp" />
     <ClCompile Include="Source\MarkovChains\MarkovChains.ixx" />
   </ItemGroup>

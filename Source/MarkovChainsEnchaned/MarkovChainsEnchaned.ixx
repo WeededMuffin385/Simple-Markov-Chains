@@ -25,7 +25,6 @@ export namespace Sandcore {
 
 		void normalizeDictionaryChances();
 		void normalizeFirstChainChances();
-		void normalizeLastChainChances();
 		void normalizeLength();
 
 		std::map<std::string, std::map<char, double>> dictionary;
@@ -33,9 +32,6 @@ export namespace Sandcore {
 
 		std::map<std::string, double> firstChain;
 		std::map<std::string, double> firstChainNormalized;
-
-		std::map<std::string, double> lastChain;
-		std::map<std::string, double> lastChainNormalized;
 
 		std::map<int, double> length; // return [length of name][amount of names with this length]
 		std::map<int, double> lengthNormalized;

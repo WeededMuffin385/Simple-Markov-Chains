@@ -15,7 +15,7 @@ int main() {
 
 	auto& arr = markovChains.getFirstChain();
 
-	for (int i = 0; i < 10; ++i) {
+	for (int i = 0; i < 100; ++i) {
 		std::cout << markovChains.generate(markovChains.getRandomChain(), markovChains.getRandomLength()) << "\n";
 	}
 }

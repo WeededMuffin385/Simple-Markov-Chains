@@ -21,7 +21,6 @@ namespace Sandcore {
 
 
 			if (data.size() >= chainLength) ++firstChain[std::string(&data[0], &data[chainLength])];
-			if (data.size() >= chainLength) ++lastChain[std::string(&data[data.size() - chainLength], &data[data.size()])];
 			++length[data.size()];
 
 
@@ -41,7 +40,6 @@ namespace Sandcore {
 		isNormalized = true;
 		normalizeDictionaryChances();
 		normalizeFirstChainChances();
-		normalizeLastChainChances();
 		normalizeLength();
 	}
 
@@ -74,19 +72,6 @@ namespace Sandcore {
 		}
 	}
 
-	void MarkovChainsEnchanced::normalizeLastChainChances() {
-		lastChainNormalized = lastChain;
-		double sum = 0;
-
-		for (auto& [key, value] : lastChainNormalized) {
-			sum += value;
-		}
-
-		for (auto& [key, value] : lastChainNormalized) {
-			value /= sum;
-		}
-	}
-
 	void MarkovChainsEnchanced::normalizeLength() {
 		lengthNormalized = length;
 		double sum = 0;
@@ -108,26 +93,23 @@ namespace Sandcore {
 
 	std::string MarkovChainsEnchanced::generate(std::string first, int length) {
 		normalizeChances();
-		std::string word; word += first;
+		std::string word(first);
 
-		while ((word.size() < length) || (!lastChainNormalized.contains(first)) && (word.size() < length + 5)) {
+		while (word.size() < length) {
 			double chance = getChance();
 			double border = 0;
-			char chain = 0;
 
 			for (auto& [key, value] : dictionaryNormalized[first]) {
 				if (chance >= border) {
 					if (chance <= (border + value)) {
-						chain = key;
+						word += key;
+						first.erase(0, 1);
+						first += key;
 						break;
 					}
 				}
 				border += value;
 			}
-			word += chain;
-			first.erase(0, 1);
-			first += chain;
-
 		}
 		return word;
 	}

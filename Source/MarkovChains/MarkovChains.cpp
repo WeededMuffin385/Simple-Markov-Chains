@@ -1,4 +1,5 @@
 #include <filesystem>
+#include <iostream>
 #include <fstream>
 #include <random>
 
@@ -17,12 +18,19 @@ namespace Sandcore {
 			std::string data;
 			file >> data;
 			if (data.empty()) continue;
-			++firstChain[data[0]];
+
+
+			if (data.size() >= chainLength) ++firstChain[std::string(&data[0], &data[chainLength])];
 			++length[data.size()];
-			for (int i = 0; i < data.size() - 1; ++i) {
-				auto from = data[i];
-				auto to = data[i + 1];
-				++dictionary[from][to];
+
+
+			std::string prefix;
+			for (auto c : data) {
+				if (prefix.size() == chainLength) {
+					++dictionary[prefix][c];
+					prefix.erase(0, 1);
+				}
+				prefix += c;
 			}
 		}
 	}
@@ -77,44 +85,40 @@ namespace Sandcore {
 		}
 	}
 
-	void MarkovChains::clear() {
+	void MarkovChains::deleteData() {
 		dictionary.clear();
 		firstChain.clear();
 		length.clear();
 	}
 
-	std::string MarkovChains::generate(char first, int length) {
+	std::string MarkovChains::generate(std::string first, int length) {
 		normalizeChances();
-		std::string word; word += first;
+		std::string word(first);
 
 		while (word.size() < length) {
 			double chance = getChance();
 			double border = 0;
-			char chain = 0;
 
-			auto last = word[word.size() - 1];
-
-			for (auto& [key, value] : dictionaryNormalized[last]) {
+			if (dictionaryNormalized[first].empty()) break;
+			for (auto& [key, value] : dictionaryNormalized[first]) {
 				if (chance >= border) {
 					if (chance <= (border + value)) {
-						chain = key;
+						word += key;
+						first.erase(0, 1);
+						first += key;
 						break;
 					}
 				}
 				border += value;
 			}
-			word += chain;
 		}
+		if (*word.rbegin() == '-') word.erase(word.size() - 1);
+
 		return word;
 	}
 
 	double MarkovChains::getChance() {
 		return dist(random);
-	}
-
-	std::map<char, double>& MarkovChains::getFirstChain() {
-		normalizeChances();
-		return firstChainNormalized;
 	}
 
 	int MarkovChains::getRandomLength() {
@@ -138,12 +142,12 @@ namespace Sandcore {
 		return chain;
 	}
 
-	char MarkovChains::getRandomChain() {
+	std::string MarkovChains::getRandomChain() {
 		normalizeChances();
 
 		double chance = getChance();
 		double border = 0;
-		char chain = 0;
+		std::string chain;
 
 		for (auto& [key, value] : firstChainNormalized) {
 			if (chance >= border) {

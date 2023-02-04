@@ -11,11 +11,9 @@ int main() {
 
 	MarkovChains markovChains;
 
-	markovChains.uploadData("C:/Workbench/Markov Chains/human.txt");
+	markovChains.uploadData("C:/Users/Mi/Documents/GitHub/Simple-Markov-Chains/Data/russian cities.txt");
 
-	auto& arr = markovChains.getFirstChain();
-
-	for (char c = 'A'; c <= 'Z'; ++c) {
+	for (int i = 0; i < 100; ++i) {
 		std::cout << markovChains.generate(markovChains.getRandomChain(), markovChains.getRandomLength()) << "\n";
 	}
 }

@@ -112,7 +112,9 @@ namespace Sandcore {
 				border += value;
 			}
 		}
-		if (*word.rbegin() == '-') word.erase(word.size() - 1);
+		if (word[word.size() - 1] == '-') word.erase(word.size() - 1);
+		if (word[word.size() - 2] == '-') word.erase(word.size() - 2);
+		if (word[word.size() - 3] == '-') word.erase(word.size() - 3);
 
 		return word;
 	}

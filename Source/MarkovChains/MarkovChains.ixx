@@ -10,7 +10,8 @@ export namespace Sandcore {
 	public:
 		MarkovChains();
 
-		void uploadData(std::filesystem::path path); // load data from file
+		void uploadData(std::string data);
+		void uploadFile(std::filesystem::path path); // load data from file
 		void deleteData(); // clear data
 
 		std::string generate(std::string first, int length); // generate Markov chain with character [first]

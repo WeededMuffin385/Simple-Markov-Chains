@@ -9,7 +9,23 @@ namespace Sandcore {
 		random.seed(std::random_device()());
 	}
 
-	void MarkovChains::uploadData(std::filesystem::path path) {
+	void MarkovChains::uploadData(std::string data) {
+		isNormalized = false;
+		if (data.size() >= chainLength) ++firstChain[std::string(&data[0], &data[chainLength])];
+		++length[data.size()];
+
+
+		std::string prefix;
+		for (auto c : data) {
+			if (prefix.size() == chainLength) {
+				++dictionary[prefix][c];
+				prefix.erase(0, 1);
+			}
+			prefix += c;
+		}
+	}
+
+	void MarkovChains::uploadFile(std::filesystem::path path) {
 		isNormalized = false;
 		std::ifstream file(path);
 

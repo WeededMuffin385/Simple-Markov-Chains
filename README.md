@@ -1,2 +1,2 @@
 # Simple-Markov-Chains
-Simple-Markov-Chains will be archieved as the Class and algorithms are migrated to "Sandcore Engine". The code here is semi-ready.
+Simple-Markov-Chains was unarchieved to show the result of the work that the author did.

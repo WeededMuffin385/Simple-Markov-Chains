@@ -14,6 +14,7 @@ import Sandcore.UnequalRandom;
 
 namespace Sandcore {
 	void MarkovChains::uploadData(std::string data) {
+		isMaxCounted = false;
 		if (data.size() >= chainLength) ++first[std::string(&data[0], &data[chainLength])];
 		++length[data.size()];
 
@@ -29,6 +30,7 @@ namespace Sandcore {
 	}
 
 	void MarkovChains::uploadFile(std::filesystem::path path) {
+		isMaxCounted = false;
 		std::ifstream file(path);
 		std::string data;
 
@@ -40,6 +42,7 @@ namespace Sandcore {
 	}
 
 	void MarkovChains::deleteData() {
+		isMaxCounted = false;
 		dictionary.clear();
 		length.clear();
 		first.clear();
@@ -74,9 +77,10 @@ namespace Sandcore {
 			first.erase(0, 1);
 			first += key;
 		}
-		if (word[word.size() - 1] == '-') word.erase(word.size() - 1);
-		if (word[word.size() - 2] == '-') word.erase(word.size() - 2);
-		if (word[word.size() - 3] == '-') word.erase(word.size() - 3);
+
+		for (int i = 0; i < 3; ++i) {
+			if (word[word.size() - i - 1] == '-') word.erase(word.size() - i - 1);
+		}
 
 		return word;
 	}

@@ -11,13 +11,13 @@ export namespace Sandcore {
 
 	template <typename T>
 	const T& getRandomValue(std::unordered_map<T, std::uint64_t>& chances, std::uint64_t max) {
-		std::uniform_int_distribution<std::uint64_t> dist(0, max);
+		std::uniform_int_distribution<std::uint64_t> dist(1, max);
 		std::uint64_t chance = dist(random);
-		std::uint64_t border = 0;
+		std::uint64_t border = 1;
 
 		for (auto& [key, value] : chances) {
 			if (chance >= border) {
-				if (chance <= (border + value)) {
+				if (chance < (border + value)) {
 					return key;
 				}
 			}

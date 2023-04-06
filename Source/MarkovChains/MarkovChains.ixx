@@ -18,9 +18,9 @@ export namespace Sandcore {
 		void deleteData();
 
 		std::string generate(std::string first, int length);
+
 		int getRandomLength();
 		std::string getRandomFirst();
-
 	private:
 		int chainLength = 3;
 		bool isMaxCounted = false;
